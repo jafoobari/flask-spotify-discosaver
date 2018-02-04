@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, {{ username }}, you have been authenticated, and your playlist has been saved, thank you!</h1>
+    <p>Your playlist can be reached here {{ dw_url }}.</p>
+    <p>You were redirected from {{ redirect_url }}</p>
+{% endblock %}

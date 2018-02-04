@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, {{ user.username }}!</h1>
+    <p>Below are your already saved playlists.</p>
+    {% for playlist in saved_DW_playlists %}
+    <div><p>{{ playlist.date }} : <b>{{ playlist.tracks }}</b></p></div>
+    {% endfor %}
+    <p>You can connect your Spotify account here: <a href="/connect-spotify">Connect Spotify Account</a></p>
+{% endblock %}

@@ -1,0 +1,14 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - DiscoveredSaver</title>
+      {% else %}
+      <title>Welcome to DiscoveredSaver</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>DiscoveredSaver: <a href="/index">Home</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
