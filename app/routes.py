@@ -10,11 +10,10 @@ from flask import render_template, redirect, request
 from app import app
 
 def dict_index_by_key(lst, key, value):
-    for i, d in enumerate(lst):
+    for i,d in enumerate(lst):
         if d[key] == value:
             return i
-        else:
-            return -1
+    return -1
 
             
 @app.route('/')
