@@ -7,7 +7,8 @@ from urllib.parse import urlparse
 
 
 from flask import render_template, redirect, request
-from app import app
+from app import app, db
+from app.models import User
 
 def dict_index_by_key(lst, key, value):
     for i,d in enumerate(lst):
@@ -37,6 +38,7 @@ def index():
 @app.route('/auth-spotify')
 def callback():
     username = 'jabsybobabsy'
+    #Try to get username from auth flow if possible, otherwise from a form.
     code = request.args.get('code')
     redirect_url = request.url
     today = date.today()
@@ -53,7 +55,8 @@ def callback():
                                             scope = scope, 
                                             cache_path = cache_path)
     token_info = oauth.get_access_token(code)
-    token = token_info['access_token']                          
+    token = token_info['access_token']
+    refresh_token = token_info['refresh_token']                          
     sp = spotipy.Spotify(auth=token)
     
     playlists = sp.current_user_playlists()['items']    
@@ -72,6 +75,9 @@ def callback():
                                 new_archived_playlist['id'],
                                 track_ids)
     dw_url = new_archived_playlist['external_urls']['spotify']
+    user = User(username=username, token=token, refresh_token=refresh_token)
+    db.session.add(user)
+    db.session.commit()
     return render_template('success.html', username=username,
                            dw_url = dw_url,
                            redirect_url = redirect_url)
