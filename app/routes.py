@@ -38,12 +38,13 @@ def index():
 @app.route('/auth-spotify')
 def callback():
     username = 'jabsybobabsy'
-    #Try to get username from auth flow if possible, otherwise from a form.
+    #TODO: Try to get username from auth flow if possible, otherwise from a form.
     code = request.args.get('code')
     redirect_url = request.url
     today = date.today()
     last_monday = today - timedelta(days=today.weekday())    
-    
+    #TODO: Put below client info in a config file
+    #TODO: Put all spotify logic in its own file -- should be modular
     client_id = '8412e923acce48a8b99ada05b6ba1181'     
     client_secret = 'fbcadd353812442aaf9bd8c2bf6f0801'
     redirect_uri = 'http://localhost:5000/auth-spotify'

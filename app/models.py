@@ -1,5 +1,7 @@
 from app import db
 
+#TODO: store token_info in database so can check for expiration.
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
