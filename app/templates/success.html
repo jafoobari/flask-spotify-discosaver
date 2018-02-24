@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hi, {{ username }}, you have been authenticated, and your playlist has been saved, thank you!</h1>
-    <p>Your playlist can be reached here {{ dw_url }}.</p>
-    <p>You were redirected from {{ redirect_url }}</p>
+<h1>Hi, {{ username }}, you have been authenticated!</h1>
+
+<p>Do you want to save your playlist?</p>
+
+<a href="/save-playlist/{{username}}">Click here to save your current Discover Weekly playlist.</a>
 {% endblock %}
