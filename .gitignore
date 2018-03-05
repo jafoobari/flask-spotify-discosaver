@@ -32,3 +32,4 @@ nosetests.xml
 # Translations
 *.mo
 requirements_PA.txt
+app.db
