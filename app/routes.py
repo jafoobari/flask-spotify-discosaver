@@ -32,6 +32,7 @@ def is_token_expired(token_info):
 @app.route('/')
 @app.route('/index')
 def index():
+    #TODO: Check for a cookie/local storage for user
     return render_template('index.html', title='Home')
 
 @app.route('/success')
@@ -45,9 +46,14 @@ def callback():
     refresh_token = token_info['refresh_token']                          
     sp = spotipy.Spotify(auth=token)
     username = sp.current_user()['id']
-    user = User(username=username, token=token, refresh_token=refresh_token)
-    db.session.add(user)
-    db.session.commit()
+    #TODO: Check for is user is in database before trying create and save.
+    exists = db.session.query(
+        db.session.query(User).filter_by(username=username).exists()
+    ).scalar()
+    if exists is False:
+        user = User(username=username, token=token, refresh_token=refresh_token)
+        db.session.add(user)
+        db.session.commit()
     return render_template('success.html', username=username)
     
 
