@@ -11,10 +11,10 @@ from app import app, db
 from app.models import User
 
 
-client_id = '8412e923acce48a8b99ada05b6ba1181'     
-client_secret = 'fbcadd353812442aaf9bd8c2bf6f0801'
-redirect_uri = 'http://localhost:5000/success'
-scope = 'playlist-modify-private playlist-read-private'
+client_id = app.config['CLIENT_ID']
+client_secret = app.config['CLIENT_SECRET']
+redirect_uri = app.config['REDIRECT_URI']
+scope = app.config['SCOPE']
 oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret,
                                     redirect_uri, scope = scope)
 
@@ -37,8 +37,7 @@ def index():
 
 @app.route('/success')
 def callback():
-    code = request.args.get('code')   
-    #TODO: Put below client info in a config file
+    code = request.args.get('code')
     #TODO: Put all spotify logic in its own file -- should be modular
     
     token_info = oauth.get_access_token(code)

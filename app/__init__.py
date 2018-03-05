@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from config import Config
+import config
+
 
 app = Flask(__name__)
-app.config.from_object(Config)
+#Takes place of app.config.from_object(Config)
+config.configure_app(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
