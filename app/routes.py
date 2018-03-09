@@ -25,9 +25,9 @@ def dict_index_by_key(lst, key, value):
             return i
     return -1
 
-def is_token_expired(token_info):
+def is_token_expired(expires_at, expires_in):
     now = int(datetime.timestamp(datetime.now()))
-    return token_info['expires_at'] - now < 60
+    return expires_at - now < (expires_in/60)
 
 @app.before_first_request
 def setup_session():
@@ -42,12 +42,9 @@ def index():
 @app.route('/success')
 def callback():
     code = request.args.get('code')
-    #TODO: Put all spotify logic in its own file -- should be modular
-    
-    token_info = oauth.get_access_token(code)
-    token = token_info['access_token']
-    refresh_token = token_info['refresh_token']                          
-    sp = spotipy.Spotify(auth=token)
+    #TODO: Put all spotify logic in its own file -- should be modular    
+    token_info = oauth.get_access_token(code)                         
+    sp = spotipy.Spotify(auth=token_info['access_token'])
     username = sp.current_user()['id']
     session['username'] = username
     #TODO: Check for is user is in database before trying create and save.
@@ -55,13 +52,19 @@ def callback():
         db.session.query(User).filter_by(username=username).exists()
     ).scalar()
     if exists is False:
-        user = User(username=username, token=token, refresh_token=refresh_token)
+        user = User(username=username,
+                    access_token=token_info['access_token'],
+                    refresh_token=token_info['refresh_token'],
+                    token_expires_at=token_info['expires_at'],
+                    token_expires_in=token_info['expires_in'],
+                    token_scope=token_info['scope'],
+                    token_type=token_info['token_type'])
         db.session.add(user)
         db.session.commit()
     return render_template('success.html', username=username)
     
 
-    
+#TODO: Get username without passing it through URL. Perhaps via session.    
 @app.route('/save-playlist/<username>')
 def save_playlist(username):
     today = date.today()
@@ -70,10 +73,15 @@ def save_playlist(username):
     #TODO: Put all spotify logic in its own file -- should be modular
     
     user = User.query.filter_by(username=username).first()
-    fresh_token_info = oauth.refresh_access_token(user.refresh_token)
-    token = fresh_token_info['access_token']                          
-    sp = spotipy.Spotify(auth=token)
-    
+    if is_token_expired(user.token_expires_at, user.token_expires_in) == True:
+        fresh_token_info = oauth.refresh_access_token(user.refresh_token)
+        sp = spotipy.Spotify(auth=fresh_token_info['access_token'])
+        user.access_token = fresh_token_info['access_token']
+        user.token_expires_at = fresh_token_info['expires_at']
+        user.token_expires_in = fresh_token_info['expires_in']
+        db.session.commit()          
+    else:
+        sp = spotipy.Spotify(auth=user.access_token)                         
     playlists = sp.current_user_playlists()['items']    
     dscvr_wkly_playlist = playlists[dict_index_by_key(playlists, 'name',
                                                       'Discover Weekly')]
@@ -89,7 +97,6 @@ def save_playlist(username):
                                 new_archived_playlist['id'],
                                 track_ids)
     dw_url = new_archived_playlist['external_urls']['spotify']
-    #TODO: Update the user with new token_info...I guess?
     return render_template('playlist-saved.html', username=username,
                            dw_url=dw_url)
 
