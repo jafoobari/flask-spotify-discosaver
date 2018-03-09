@@ -6,7 +6,7 @@ import spotipy.util as util
 from urllib.parse import urlparse
 
 
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, session
 from app import app, db
 from app.models import User
 
@@ -28,6 +28,10 @@ def dict_index_by_key(lst, key, value):
 def is_token_expired(token_info):
     now = int(datetime.timestamp(datetime.now()))
     return token_info['expires_at'] - now < 60
+
+@app.before_first_request
+def setup_session():
+    session.permanent = True
             
 @app.route('/')
 @app.route('/index')
@@ -45,6 +49,7 @@ def callback():
     refresh_token = token_info['refresh_token']                          
     sp = spotipy.Spotify(auth=token)
     username = sp.current_user()['id']
+    session['username'] = username
     #TODO: Check for is user is in database before trying create and save.
     exists = db.session.query(
         db.session.query(User).filter_by(username=username).exists()
@@ -86,9 +91,13 @@ def save_playlist(username):
     dw_url = new_archived_playlist['external_urls']['spotify']
     #TODO: Update the user with new token_info...I guess?
     return render_template('playlist-saved.html', username=username,
-                           dw_url = dw_url)
+                           dw_url=dw_url)
 
     
 @app.route('/connect-spotify')
-def auth():  
-    return redirect(oauth.get_authorize_url())
+def auth():
+    if not session.get('username'):
+        return redirect(oauth.get_authorize_url())
+    else:
+        return render_template('return_visitor.html', username=session.get('username'))
+    

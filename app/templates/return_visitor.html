@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Hi, {{ username }}, welcome back!</h1>
+
+<p>Do you want to save your playlist?</p>
+
+<a href="/save-playlist/{{username}}">Click here to save your current Discover Weekly playlist.</a>
+{% endblock %}
