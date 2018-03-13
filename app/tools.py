@@ -1,6 +1,16 @@
-from datetime import date, timedelta
-import spotipy
+from datetime import date, timedelta, datetime
 
+import spotipy
+import spotipy.util as util #Needed for spotipy.oauth2
+
+from app import app, db
+
+client_id = app.config['CLIENT_ID']
+client_secret = app.config['CLIENT_SECRET']
+redirect_uri = app.config['REDIRECT_URI']
+scope = app.config['SCOPE']
+oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret,
+                                    redirect_uri, scope = scope)
 
 def dict_index_by_key(lst, key, value):
     for i,d in enumerate(lst):
@@ -8,8 +18,19 @@ def dict_index_by_key(lst, key, value):
             return i
     return -1
 
+def is_token_expired(user):
+    now = int(datetime.timestamp(datetime.now()))
+    return user.token_expires_at - now < (user.token_expires_in/60)
 
-def save(access_token):
+def refresh_and_save_token(user):
+    fresh_token_info = oauth.refresh_access_token(user.refresh_token)
+    user.access_token = fresh_token_info['access_token']
+    user.token_expires_at = fresh_token_info['expires_at']
+    user.token_expires_in = fresh_token_info['expires_in']
+    db.session.commit()
+    db.session.refresh(user)
+
+def save_discover_weekly(access_token):
     today = date.today()
     last_monday = today - timedelta(days=today.weekday())
     sp = spotipy.Spotify(auth=access_token) 

@@ -1,39 +1,8 @@
-from datetime import datetime
-
-import spotipy
-import spotipy.util as util #Needed for spotipy.oauth2 on L16
-
-
 from flask import render_template, redirect, request, session
-from app import app, db, save_discover_weekly
+from app import app, db, tools
 from app.models import User
+#TODO: Figure out how to clean up redundant imports
 
-
-client_id = app.config['CLIENT_ID']
-client_secret = app.config['CLIENT_SECRET']
-redirect_uri = app.config['REDIRECT_URI']
-scope = app.config['SCOPE']
-oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret,
-                                    redirect_uri, scope = scope)
-
-
-def dict_index_by_key(lst, key, value):
-    for i,d in enumerate(lst):
-        if d[key] == value:
-            return i
-    return -1
-
-def is_token_expired(user):
-    now = int(datetime.timestamp(datetime.now()))
-    return user.token_expires_at - now < (user.token_expires_in/60)
-
-def refresh_and_save_token(user):
-    fresh_token_info = oauth.refresh_access_token(user.refresh_token)
-    user.access_token = fresh_token_info['access_token']
-    user.token_expires_at = fresh_token_info['expires_at']
-    user.token_expires_in = fresh_token_info['expires_in']
-    db.session.commit()
-    db.session.refresh(user)
 
 @app.before_first_request
 def setup_session():
@@ -47,13 +16,12 @@ def index():
 
 @app.route('/success')
 def callback():
-    code = request.args.get('code')   
-    token_info = oauth.get_access_token(code)   
-    #TODO: Move literally all spotipy/spotify logic into own file/module                      
-    sp = spotipy.Spotify(auth=token_info['access_token'])
+    code = request.args.get('code')
+    #TODO: See if way to move most of below into tools.py
+    token_info = tools.oauth.get_access_token(code)                         
+    sp = tools.spotipy.Spotify(auth=token_info['access_token'])
     username = sp.current_user()['id']
     session['username'] = username
-    #TODO: Check for is user is in database before trying create and save.
     exists = db.session.query(
         db.session.query(User).filter_by(username=username).exists()
     ).scalar()
@@ -74,9 +42,9 @@ def callback():
 @app.route('/save-playlist/<username>')
 def save_playlist(username):        
     user = User.query.filter_by(username=username).first()
-    if is_token_expired(user) == True:
-        refresh_and_save_token(user)                                          
-    dw_url = save_discover_weekly.save(user.access_token)
+    if tools.is_token_expired(user) == True:
+        tools.refresh_and_save_token(user)                                          
+    dw_url = tools.save_discover_weekly(user.access_token)
     return render_template('playlist-saved.html', username=username,
                            dw_url=dw_url)
 
@@ -84,7 +52,7 @@ def save_playlist(username):
 @app.route('/connect-spotify')
 def auth():
     if not session.get('username'):
-        return redirect(oauth.get_authorize_url())
+        return redirect(tools.oauth.get_authorize_url())
     else:
         return render_template('return_visitor.html', username=session.get('username'))
     
