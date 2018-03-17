@@ -4,6 +4,7 @@ import spotipy
 import spotipy.util as util #Needed for spotipy.oauth2
 
 from dw_saver import app, db
+from dw_saver.models import User
 
 client_id = app.config['CLIENT_ID']
 client_secret = app.config['CLIENT_SECRET']
@@ -11,6 +12,13 @@ redirect_uri = app.config['REDIRECT_URI']
 scope = app.config['SCOPE']
 oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret,
                                     redirect_uri, scope = scope)
+
+def str_to_bool(s):
+    if s == 'True':
+        return True
+    else:
+        return False
+
 
 def dict_index_by_key(lst, key, value):
     for i,d in enumerate(lst):
@@ -51,3 +59,10 @@ def save_discover_weekly(access_token):
                                 track_ids)
     dw_url = new_archived_playlist['external_urls']['spotify']
     return dw_url
+
+def save_all_users_dw():    
+    users = User.query.all()  
+    for user in users:
+        if is_token_expired(user) == True:
+            refresh_and_save_token(user)          
+        save_discover_weekly(user.access_token)
