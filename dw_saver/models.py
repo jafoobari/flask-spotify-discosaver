@@ -1,6 +1,5 @@
-from app import db
+from dw_saver import db
 
-#TODO: store token_info in database so can check for expiration.
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)

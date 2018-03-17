@@ -10,4 +10,4 @@ config.configure_app(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from app import routes, models
+from dw_saver import routes, models

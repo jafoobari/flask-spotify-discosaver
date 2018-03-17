@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, session
-from app import app, db, tools
-from app.models import User
-#TODO: Figure out how to clean up redundant imports
+from dw_saver import app, db, tools
+from dw_saver.models import User
+#TODO: Figure out how to clean up circular and redundant imports
 
 
 @app.before_first_request

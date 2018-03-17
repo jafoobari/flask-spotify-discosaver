@@ -3,7 +3,7 @@ from datetime import date, timedelta, datetime
 import spotipy
 import spotipy.util as util #Needed for spotipy.oauth2
 
-from app import app, db
+from dw_saver import app, db
 
 client_id = app.config['CLIENT_ID']
 client_secret = app.config['CLIENT_SECRET']
