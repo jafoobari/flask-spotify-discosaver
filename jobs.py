@@ -1,12 +1,12 @@
 from os import getenv
-import datetime
+from datetime import date
 
 from dw_saver.tools import str_to_bool, save_all_users_dw
 
 
 run_now = str_to_bool(getenv('RUN_JOB_NOW', False))
 
-today = datetime.date.today()
+today = date.today()
 today_weekday = today.weekday()    
 weekdays_to_run = [0]
                         
