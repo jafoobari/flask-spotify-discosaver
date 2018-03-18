@@ -40,7 +40,7 @@ def refresh_and_save_token(user):
 
 def save_discover_weekly(access_token):
     today = date.today()
-    last_monday = today - timedelta(days=today.weekday())
+    last_monday = today - timedelta(days=today.weekday()) 
     sp = spotipy.Spotify(auth=access_token) 
     username = sp.current_user()['id'] 
     playlists = sp.current_user_playlists()['items']    
@@ -66,3 +66,14 @@ def save_all_users_dw():
         if is_token_expired(user) == True:
             refresh_and_save_token(user)          
         save_discover_weekly(user.access_token)
+        
+def create_monthly_dw(user):
+    today = date.today()
+    current_month_name = today.strftime("%B")
+    sp = spotipy.Spotify(auth=user.access_token)
+    username = sp.current_user()['id'] 
+    playlists = sp.current_user_playlists()['items']
+    dscvr_wkly_playlist = playlists[dict_index_by_key(playlists, 'name',
+                                                      'Discover Weekly')]
+    monthly_dw_playlist = playlists[dict_index_by_key(playlists, 'name',
+                                                      'Discover Weekly')]
