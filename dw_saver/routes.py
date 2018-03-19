@@ -44,10 +44,19 @@ def save_playlist(username):
     user = User.query.filter_by(username=username).first()
     if tools.is_token_expired(user) == True:
         tools.refresh_and_save_token(user)                                          
-    dw_url = tools.save_discover_weekly(user.access_token)
+    dw_url = tools.save_discover_weekly(user)
     return render_template('playlist-saved.html', username=username,
                            dw_url=dw_url)
 
+@app.route('/save-to-monthly-playlist/<username>')
+def save_to_monthly_playlist(username):        
+    user = User.query.filter_by(username=username).first()
+    if tools.is_token_expired(user) == True:
+        tools.refresh_and_save_token(user)                                          
+    #TODO: Clean this up. Better var names, own template, etc.
+    monthly_dw_url = tools.add_dw_tracks_to_monthly_dw(user)    
+    return render_template('playlist-saved.html', username=username,
+                           dw_url=monthly_dw_url)
     
 @app.route('/connect-spotify')
 def auth():
