@@ -55,9 +55,9 @@ def save_to_monthly_playlist(username):
     if tools.is_token_expired(user) == True:
         tools.refresh_and_save_token(user)                                          
     #TODO: Clean this up. Better var names, own template, etc.
-    monthly_dw_url = tools.add_dw_tracks_to_monthly_dw(user)    
+    monthly_dw_playlist = tools.add_dw_tracks_to_monthly_dw(user)
     return render_template('playlist-saved.html', username=username,
-                           dw_url=monthly_dw_url)
+                           dw_uri=monthly_dw_playlist['uri'])
     
 @app.route('/connect-spotify')
 def auth():

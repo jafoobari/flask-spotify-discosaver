@@ -107,10 +107,9 @@ def get_or_create_monthly_dw(user):
 def add_dw_tracks_to_monthly_dw(user):
     sp = spotipy.Spotify(auth=user.access_token)
     monthly_dw_playlist = get_or_create_monthly_dw(user)
-    monthly_dw_playlist_url = monthly_dw_playlist['external_urls']['spotify']
     dw_track_ids = dw_track_ids_from_playlist(user)
     sp.user_playlist_add_tracks(user.username,
                                 monthly_dw_playlist['id'],
                                 dw_track_ids)
-    return monthly_dw_playlist_url
+    return monthly_dw_playlist
     
