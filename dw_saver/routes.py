@@ -44,9 +44,10 @@ def save_playlist(username):
     user = User.query.filter_by(username=username).first()
     if tools.is_token_expired(user) == True:
         tools.refresh_and_save_token(user)                                          
-    dw_url = tools.save_discover_weekly(user)
+    new_saved_dw_playlist = tools.save_discover_weekly(user)
+    dw_url = new_saved_dw_playlist['external_urls']['spotify']
     return render_template('playlist-saved.html', username=username,
-                           dw_url=dw_url)
+                           dw_url=dw_url, dw_uri=new_saved_dw_playlist['uri'])
 
 @app.route('/save-to-monthly-playlist/<username>')
 def save_to_monthly_playlist(username):        

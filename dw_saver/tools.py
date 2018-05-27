@@ -66,7 +66,7 @@ def save_discover_weekly(user):
                                 new_saved_dw_playlist['id'],
                                 track_ids)
     dw_url = new_saved_dw_playlist['external_urls']['spotify']
-    return dw_url
+    return new_saved_dw_playlist
 
 def save_all_users_dw():    
     users = User.query.all()  

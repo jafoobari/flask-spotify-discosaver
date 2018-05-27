@@ -2,5 +2,12 @@
 
 {% block content %}
     <h1>{{ username }}, your playlist has been saved!</h1>
-    <p>Your playlist can be reached here {{ dw_url }}.</p>
+    <br>
+    <br>
+    <center>
+    <h1><p>Check it out below!</p></h1>
+    <br>   
+    
+    <iframe src="https://open.spotify.com/embed?uri={{dw_uri}}" width="520" height="600" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    </center>
 {% endblock %}
