@@ -3,8 +3,8 @@
 To set up a new local environment:
 ```
 $ git clone https://gitlab.com/jallen92/flask-spotify.git
-$ python3 -m venv flask_spotify
-$ source flask_spotify/Scripts/activate
+$ python3 -m venv venv
+$ source venv/Scripts/activate
 $ pip install -r requirements.txt
 ```
 
