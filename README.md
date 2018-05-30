@@ -26,3 +26,28 @@ To get a specific remote branch for local development:
 $ git pull origin <rbranch>:<lbranch> 
 $ git checkout <lbranch>
 ```
+
+## Merging
+
+To merge a branch with master:
+```
+$ git checkout <branch>
+$ git merge master #to keep master clean while resolving any conflicts
+$ git checkout master
+$ git merge <branch> #should be a clean merge
+```
+
+Tag branches after merging and before deleting:
+```
+$ git checkout <branch>
+$ git tag -a <version> -m "<version description>"
+$ git push origin <version> #push the tag to the remote repo
+```
+
+Finally, delete the branch:
+```
+$ git checkout master
+$ git branch -d <branch>
+$ git push origin :<branch> #delete the branch from the remote repo
+```
+
