@@ -13,11 +13,16 @@ To ensure you have the latest changes:
 $ git pull origin master
 ```
 
+If you need to update database models:
+```
+$ flask db migrate -m "<message>"
+$ flask db upgrade
+```
+
 To run web app locally:
 ```
 $ export FLASK_APP=spotify_dw.py
 $ export FLASK_CONFIG=dev
-$ flask db upgrade
 $ flask run
 ```
 
