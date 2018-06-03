@@ -9,4 +9,14 @@
 <br>
 <br>
 <a href="/save-to-monthly-playlist/{{username}}">Click here to add your current Discover Weekly to a monthly Discover Weekly playlist (which will be created if it doesn't exist).</a>
+
+<p>You can turn on/off recurring weekly and monthly saves of your Discover Weekly below.</p>
+
+<form action ="/settings" method="POST">
+<input type="checkbox" name="weekly" value="weekly" {{weekly_checkbox}}> Weekly <br/>
+<input type="checkbox" name="monthly" value="monthly" {{monthly_checkbox}}> Monthly </br>
+<br/>
+<input type="submit">
+</form>
+
 {% endblock %}

@@ -68,12 +68,17 @@ def save_discover_weekly(user):
     dw_url = new_saved_dw_playlist['external_urls']['spotify']
     return new_saved_dw_playlist
 
-def save_all_users_dw():    
+def save_all_users_dw():
+    #TODO: Don't grab all users; query just for scheduled users.    
     users = User.query.all()  
     for user in users:
-        if is_token_expired(user) == True:
-            refresh_and_save_token(user)          
-        save_discover_weekly(user.access_token)
+        if (user.weekly_scheduled or user.monthly_scheduled):           
+            if is_token_expired(user) == True:
+                refresh_and_save_token(user)   
+            if user.weekly_scheduled:               
+                save_discover_weekly(user)
+            if user.monthly_scheduled:
+                add_dw_tracks_to_monthly_dw(user)
 
 def check_for_monthly_dw(playlists, month):
     monthly_dw_index = dict_index_by_key(playlists,'name',

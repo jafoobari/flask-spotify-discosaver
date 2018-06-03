@@ -32,7 +32,9 @@ def callback():
                     token_expires_at=token_info['expires_at'],
                     token_expires_in=token_info['expires_in'],
                     token_scope=token_info['scope'],
-                    token_type=token_info['token_type'])
+                    token_type=token_info['token_type'],
+                    weekly_scheduled=False,
+                    monthly_scheduled=False)
         db.session.add(user)
         db.session.commit()
     return render_template('success.html', username=username)
@@ -64,5 +66,42 @@ def auth():
     if not session.get('username'):
         return redirect(tools.oauth.get_authorize_url())
     else:
-        return render_template('return_visitor.html', username=session.get('username'))
+        username = session.get('username')
+        user = User.query.filter_by(username=username).first()
+        weekly_is_checked = user.weekly_scheduled
+        monthly_is_checked = user.monthly_scheduled
+        weekly_checkbox = 'checked' if weekly_is_checked else ""
+        monthly_checkbox = 'checked' if monthly_is_checked else ""
+    
+        return render_template('return_visitor.html', username=username,
+                               weekly_checkbox=weekly_checkbox,
+                               monthly_checkbox=monthly_checkbox)
+
+@app.route('/settings', methods=['GET', 'POST'])
+def save_settings():
+    username = session.get('username')
+    user = User.query.filter_by(username=username).first() 
+    if request.method == 'POST':
+        weekly_is_checked = 'weekly' in request.form
+        monthly_is_checked = 'monthly' in request.form
+        if weekly_is_checked:
+            user.weekly_scheduled = True
+        else:
+            user.weekly_scheduled = False
+        if monthly_is_checked:
+            user.monthly_scheduled = True
+        else:
+            user.monthly_scheduled = False
+        db.session.commit()
+    else:
+        weekly_is_checked = user.weekly_scheduled
+        monthly_is_checked = user.monthly_scheduled
+
+    weekly_checkbox = 'checked' if weekly_is_checked else ""
+    monthly_checkbox = 'checked' if monthly_is_checked else ""
+    
+    return render_template('return_visitor.html', username=username,
+                           weekly_checkbox=weekly_checkbox,
+                           monthly_checkbox=monthly_checkbox)
+    
     

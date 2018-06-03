@@ -22,7 +22,6 @@ $ flask run
 
 If you need to update database models:
 ```
-$ flask db migrate -m "<message>"
 $ flask db upgrade
 ```
 
