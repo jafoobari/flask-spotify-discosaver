@@ -8,6 +8,11 @@ $ source venv/Scripts/activate
 $ pip install -r requirements.txt
 ```
 
+To activate virtual environment on production machine:
+```
+$ workon flask-SP-virtualenv
+```
+
 To ensure you have the latest changes:
 ```
 $ git pull origin master
@@ -20,11 +25,10 @@ $ export FLASK_CONFIG=dev
 $ flask run
 ```
 
-If you need to update database models:
+If you need to update database models from the newest migration:
 ```
 $ flask db upgrade
 ```
-
 
 To get a specific remote branch for local development:
 ```
