@@ -1,5 +1,7 @@
 # Quickstart
 
+Runs on Python 3.6.0 in production.
+
 To set up a new local environment:
 ```
 $ git clone https://gitlab.com/jallen92/flask-spotify.git
