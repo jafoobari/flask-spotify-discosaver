@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hello!</h1>
-    <p>You can connect your Spotify account here: <a href="/connect-spotify">Connect Spotify Account</a></p>
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <div class="column is-6 is-offset-3">
+            <h1 class="title is-1">
+                DiscoveredSaver
+            </h1>
+            <div class="content is-medium">
+              <p>
+                Stop missing your Discovered Weekly playlists. Save them, listen to them, share them, listen to them again.
+              </p>
+            </div>
+            <div class="container is-fluid">
+              <a class="button is-medium is-rounded is-success" href="/connect-spotify">Sign in with Spotify</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ username }}, your playlist has been saved!</h1>
-    <br>
-    <br>
-    <center>
-    <h1><p>Check it out below!</p></h1>
-    <br>   
-    
-    <iframe src="https://open.spotify.com/embed?uri={{dw_uri}}" width="520" height="600" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-    </center>
+<div class="hero-body">
+    <div class="column is-narrow-desktop-only is-6 is-offset-3 box has-text-centered">
+    	<div class="content is-medium">
+			<h1 class="title is-4 has-text-black">
+				{{ username }}, your playlist has been saved!
+			</h1>
+			<p>Check it out below!</p>
+		</div>				
+		<iframe class="section" src="https://open.spotify.com/embed?uri={{dw_uri}}" width="520" height="600" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+	</div>
+</div>
 {% endblock %}

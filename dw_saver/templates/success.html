@@ -1,14 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Hi, {{ username }}, you have been authenticated!</h1>
-
-<p>Do you want to save your playlist?</p>
-
-<a href="/save-playlist/{{username}}">Click here to save your current Discover Weekly playlist.</a>
-<br>
-<br>
-<a href="/save-to-monthly-playlist/{{username}}">Click here to add your current Discover Weekly to a monthly Discover Weekly playlist (which will be created if it doesn't exist).</a>
-
-<p>You can change your settings <a href="/settings"> here</a>.</p>
+<div class="hero-body">
+    <div class="column">
+        <div class="box has-text-centered">
+            <div class="content is-medium">
+                <h1 class="title is-4 has-text-black">
+                    Hi, {{ username }}, welcome to DiscoveredSaver!
+                </h1>
+            </div>            
+            <div class="section">
+              <span class="icon is-large has-text-success">
+                <i class="fa fa-3x fa-check"></i>
+              </span>
+            </div>    
+            <div class="section"><a class="button is-success" href="/save-playlist/{{username}}">Save your current Discover Weekly</a></div>
+            <strong>OR</strong>
+            <div class="section"><a class="button is-success" href="/save-to-monthly-playlist/{{username}}">Add your current Discover Weekly to a monthly Discover Weekly playlist</a></div>                
+        </div>
+    </div>
+</div>
 {% endblock %}

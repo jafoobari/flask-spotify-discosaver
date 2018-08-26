@@ -73,7 +73,7 @@ def auth():
         weekly_checkbox = 'checked' if weekly_is_checked else ""
         monthly_checkbox = 'checked' if monthly_is_checked else ""
     
-        return render_template('return_visitor.html', username=username,
+        return render_template('settings.html', username=username,
                                weekly_checkbox=weekly_checkbox,
                                monthly_checkbox=monthly_checkbox)
 
@@ -100,7 +100,7 @@ def save_settings():
     weekly_checkbox = 'checked' if weekly_is_checked else ""
     monthly_checkbox = 'checked' if monthly_is_checked else ""
     
-    return render_template('return_visitor.html', username=username,
+    return render_template('settings.html', username=username,
                            weekly_checkbox=weekly_checkbox,
                            monthly_checkbox=monthly_checkbox)
     

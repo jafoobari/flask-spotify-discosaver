@@ -1,14 +1,70 @@
+<!DOCTYPE html>
 <html>
-    <head>
-      {% if title %}
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if title %}
       <title>{{ title }} - DiscoveredSaver</title>
       {% else %}
-      <title>Welcome to DiscoveredSaver</title>
-      {% endif %}
-    </head>
+      <title>DiscoveredSaver</title>
+	{% endif %}
+    <!-- <link rel="shortcut icon" href="../images/fav_icon.png" type="image/x-icon"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <!-- Bulma Version 0.7.1-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/landing.css">
+</head>
     <body>
-        <div>DiscoveredSaver: <a href="/index">Home</a></div>
-        <hr>
+    <section class="hero is-info is-fullheight">
+        <div class="hero-head">
+            <nav class="navbar">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item" href="../">
+                            <!-- <img src="http://bulma.io/images/bulma-type-white.png" alt="Logo"> -->
+                        </a>
+                        <span class="navbar-burger burger" data-target="navbarMenu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </div>
+                    <div id="navbarMenu" class="navbar-menu">
+                        <div class="navbar-end">
+                            <span class="navbar-item">
+                                <a class="button is-white is-outlined" href="/index">
+                                    <span class="icon">
+                                        <i class="fa fa-home"></i>
+                                    </span>
+                                    <span>Home</span>
+                                </a>
+                            </span>
+                            <span class="navbar-item">
+                            {% if session['username'] %}
+                                <a class="button is-white is-outlined" href="/settings">
+                                    <span class="icon">
+                                        <i class="fa fa-sliders"></i>
+                                    </span>
+                                    <span>Settings</span>
+                                </a>       
+                                {% else %}                     
+                                <a class="button is-white is-outlined" href="/connect-spotify">
+                                    <span class="icon">
+                                        <i class="fa fa-sign-in"></i>
+                                    </span>
+                                    <span>Sign-in</span>
+                                </a>                     
+                            {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            </div>
         {% block content %}{% endblock %}
+    </section>
     </body>
 </html>
