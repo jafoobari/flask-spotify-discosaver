@@ -5,11 +5,13 @@
     <div class="column is-narrow-desktop-only is-6 is-offset-3 box has-text-centered">
     	<div class="content is-medium">
 			<h1 class="title is-4 has-text-black">
-				{{ username }}, your playlist has been saved!
+				Your playlist has been saved!
 			</h1>
-			<p>Check it out below!</p>
-		</div>				
-		<iframe class="section" src="https://open.spotify.com/embed?uri={{dw_uri}}" width="520" height="600" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+			<p>Check it out below</p>
+		</div>
+		<div class="iframe-container">				
+    		<iframe src="https://open.spotify.com/embed?uri={{dw_uri}}" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    	</div>
 	</div>
 </div>
 {% endblock %}

@@ -8,8 +8,10 @@
 				Welcome back, {{ username }}!
 			</h1>
 		</div>
-		<div class="section">
+		<div class="container is-fluid">
 			<p>You can turn on/off recurring weekly and monthly saves of your Discover Weekly below.</p>
+        </div>
+        <div class="section"
 			<form action ="/settings" method="POST">
 				<input type="checkbox" name="weekly" value="weekly" {{weekly_checkbox}}> Weekly <br/>
 				<input type="checkbox" name="monthly" value="monthly" {{monthly_checkbox}}> Monthly </br>

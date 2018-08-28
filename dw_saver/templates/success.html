@@ -8,15 +8,18 @@
                 <h1 class="title is-4 has-text-black">
                     Hi, {{ username }}, welcome to DiscoveredSaver!
                 </h1>
-            </div>            
-            <div class="section">
-              <span class="icon is-large has-text-success">
-                <i class="fa fa-3x fa-check"></i>
-              </span>
-            </div>    
-            <div class="section"><a class="button is-success" href="/save-playlist/{{username}}">Save your current Discover Weekly</a></div>
-            <strong>OR</strong>
-            <div class="section"><a class="button is-success" href="/save-to-monthly-playlist/{{username}}">Add your current Discover Weekly to a monthly Discover Weekly playlist</a></div>                
+            </div>               
+            <div class="level section">
+				<div class="level-item">
+					<a class="button is-success is-fluid" href="/save-playlist/{{username}}"">Save Discover Weekly</a>                         
+				</div>
+				<div class="level-item">
+    				<strong>OR</strong>
+				</div>
+				<div class="level-item">
+    				<a class="button is-success is-fluid" href="/save-to-monthly-playlist/{{username}}">Save to "Discover Monthly"</a>                          
+				</div>                            
+			</div>               
         </div>
     </div>
 </div>
