@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/landing.css">
 </head>
     <body>
-    <section class="hero is-info is-fullheight">
+    <section class="hero is-success is-fullheight">
         <div class="hero-head">
             <nav class="navbar">
                 <div class="container">
@@ -32,8 +32,10 @@
                             <span></span>
                         </span>
                     </div>
-                    <div id="navbarMenu" class="navbar-menu">
+                    <div id="navbarMenu" class="navbar-menu is-pulled-right">
                         <div class="navbar-end">
+                          <!-- <div class="level-left"></div> -->
+                          <!-- <div class="level-right"> -->
                             <span class="navbar-item">
                                 <a class="button is-white is-outlined" href="/index">
                                     <span class="icon">
@@ -49,16 +51,17 @@
                                         <i class="fa fa-sliders"></i>
                                     </span>
                                     <span>Settings</span>
-                                </a>       
-                                {% else %}                     
+                                </a>
+                                {% else %}
                                 <a class="button is-white is-outlined" href="/connect-spotify">
                                     <span class="icon">
                                         <i class="fa fa-sign-in"></i>
                                     </span>
                                     <span>Sign-in</span>
-                                </a>                     
+                                </a>
                             {% endif %}
                             </span>
+                          <!-- </div> -->
                         </div>
                     </div>
                 </div>
