@@ -38,15 +38,16 @@ def refresh_and_save_token(user):
     db.session.commit()
     db.session.refresh(user)
 
+#TODO: 'Discover Weekly' might not within first 50 results. API uses pagination. Solve it.
 def get_dw_playlist(user):
-    sp = spotipy.Spotify(auth=user.access_token)  
-    playlists = sp.current_user_playlists()['items']    
+    sp = spotipy.Spotify(auth=user.access_token)
+    playlists = sp.current_user_playlists()['items']
     dscvr_wkly_playlist = playlists[dict_index_by_key(playlists, 'name',
                                                       'Discover Weekly')]
     return dscvr_wkly_playlist
 
 def dw_track_ids_from_playlist(user):
-    sp = spotipy.Spotify(auth=user.access_token) 
+    sp = spotipy.Spotify(auth=user.access_token)
     dw_playlist = get_dw_playlist(user)
     dw_tracks = sp.user_playlist_tracks('spotify',
                                         dw_playlist['id'])
@@ -55,12 +56,12 @@ def dw_track_ids_from_playlist(user):
 
 def save_discover_weekly(user):
     today = date.today()
-    last_monday = today - timedelta(days=today.weekday()) 
-    sp = spotipy.Spotify(auth=user.access_token) 
+    last_monday = today - timedelta(days=today.weekday())
+    sp = spotipy.Spotify(auth=user.access_token)
     username = sp.current_user()['id']
-    track_ids = dw_track_ids_from_playlist(user)   
-    new_saved_dw_playlist = sp.user_playlist_create(username, 
-                                                    'DW-'+str(last_monday), 
+    track_ids = dw_track_ids_from_playlist(user)
+    new_saved_dw_playlist = sp.user_playlist_create(username,
+                                                    'DW-'+str(last_monday),
                                                     public=False)
     sp.user_playlist_add_tracks(username,
                                 new_saved_dw_playlist['id'],
@@ -69,13 +70,13 @@ def save_discover_weekly(user):
     return new_saved_dw_playlist
 
 def save_all_users_dw():
-    #TODO: Don't grab all users; query just for scheduled users.    
-    users = User.query.all()  
+    #TODO: Don't grab all users; query just for scheduled users.
+    users = User.query.all()
     for user in users:
-        if (user.weekly_scheduled or user.monthly_scheduled):           
+        if (user.weekly_scheduled or user.monthly_scheduled):
             if is_token_expired(user) == True:
-                refresh_and_save_token(user)   
-            if user.weekly_scheduled:               
+                refresh_and_save_token(user)
+            if user.weekly_scheduled:
                 save_discover_weekly(user)
             if user.monthly_scheduled:
                 add_dw_tracks_to_monthly_dw(user)
@@ -88,20 +89,20 @@ def check_for_monthly_dw(playlists, month):
     else:
         monthly_dw_playlist = playlists[monthly_dw_index]
         return monthly_dw_playlist
-    
-        
+
+
 def create_monthly_dw(user, month):
-    sp = spotipy.Spotify(auth=user.access_token)          
-    monthly_dw_playlist = sp.user_playlist_create(user.username, 
-                                                  f'DW-{month}', 
-                                                  public=False)    
+    sp = spotipy.Spotify(auth=user.access_token)
+    monthly_dw_playlist = sp.user_playlist_create(user.username,
+                                                  f'DW-{month}',
+                                                  public=False)
     return monthly_dw_playlist
 
 def get_or_create_monthly_dw(user):
     sp = spotipy.Spotify(auth=user.access_token)
     today = date.today()
     current_month = today.strftime("%B")
-    playlists = sp.current_user_playlists()['items'] 
+    playlists = sp.current_user_playlists()['items']
     monthly_dw_playlist = check_for_monthly_dw(playlists, current_month)
     if monthly_dw_playlist == None:
         monthly_dw_playlist = create_monthly_dw(user, current_month)
@@ -117,4 +118,3 @@ def add_dw_tracks_to_monthly_dw(user):
                                 monthly_dw_playlist['id'],
                                 dw_track_ids)
     return monthly_dw_playlist
-    
