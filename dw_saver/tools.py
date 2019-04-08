@@ -42,11 +42,11 @@ def get_dw_playlist(user):
     sp = spotipy.Spotify(auth=user.access_token)  
     playlists = sp.current_user_playlists()
     dw_playlist_index = dict_index_by_key(playlists['items'],
-                                       'name', 'Discover Weekly')
+                                          'name', 'Discover Weekly')
     while dw_playlist_index == None:
         playlists = sp.next(playlists)
         dw_playlist_index = dict_index_by_key(playlists['items'],
-                                           'name', 'Discover Weekly')       
+                                              'name', 'Discover Weekly')       
         
     dw_playlist = playlists['items'][dw_playlist_index]
     return dw_playlist
