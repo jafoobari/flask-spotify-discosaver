@@ -60,7 +60,8 @@ def save_to_monthly_playlist(username):
     monthly_dw_playlist = tools.add_dw_tracks_to_monthly_dw(user)
     return render_template('playlist-saved.html', username=username,
                            dw_uri=monthly_dw_playlist['uri'])
-    
+
+#TODO: Check for existence of DW playlist on sign-up and save id for it in DB.     
 @app.route('/connect-spotify')
 def auth():
     if not session.get('username'):
