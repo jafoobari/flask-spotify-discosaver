@@ -12,7 +12,7 @@ class DefaultConfig(object):
     CLIENT_ID = '8412e923acce48a8b99ada05b6ba1181'     
     CLIENT_SECRET = 'fbcadd353812442aaf9bd8c2bf6f0801'
     REDIRECT_URI = 'http://hyzypg.pythonanywhere.com/success'
-    SCOPE = 'playlist-modify-private playlist-read-private'
+    SCOPE = 'playlist-modify-private playlist-modify-public'
 
 
 class DevelopmentConfig(DefaultConfig):
