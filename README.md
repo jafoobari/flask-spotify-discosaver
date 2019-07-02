@@ -27,14 +27,17 @@ $ export FLASK_CONFIG=dev
 $ flask run
 ```
 
-If you need to update database models from the newest migration:
+If you update database models be sure to migrate and then upgrade:
 ```
+$ export FLASK_APP=spotify_dw.py
+$ flask db migrate -m "playlists and songs tables"
 $ flask db upgrade
 ```
+(Also, don't forget to import any new database models to spotify_dw.py for the shell and any other appropriate files that use the models.)
 
 To get a specific remote branch for local development:
 ```
-$ git pull origin <rbranch>:<lbranch> 
+$ git pull origin <rbranch>:<lbranch>
 $ git checkout <lbranch>
 ```
 
@@ -62,3 +65,14 @@ $ git branch -d <branch>
 $ git push origin :<branch> #delete the branch from the remote repo
 ```
 
+### Using the Shell
+
+The function that creates the shell is in spotify_dw.py. Be sure you are importing everything you want there.
+
+Run the shell with: `flask shell`
+
+### Misc
+
+Helpful guides:
+* https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
+* https://flask-sqlalchemy.palletsprojects.com/en/2.x/
