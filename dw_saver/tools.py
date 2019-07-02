@@ -4,7 +4,7 @@ import spotipy
 import spotipy.util as util #Needed for spotipy.oauth2
 
 from dw_saver import app, db
-from dw_saver.models import User
+from dw_saver.models import User, Playlist, Song
 
 client_id = app.config['CLIENT_ID']
 client_secret = app.config['CLIENT_SECRET']
@@ -13,6 +13,8 @@ scope = app.config['SCOPE']
 oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret,
                                     redirect_uri, scope = scope)
 
+#TODO:Move a bunch of these into models.py
+#TODO: Can't you just save the DW playlist id for each user and use that to retrieve it? Would be so much better than manually searching...
 def str_to_bool(s):
     if s == 'True':
         return True
@@ -60,6 +62,7 @@ def dw_track_ids_from_playlist(user):
     track_ids = [d['track']['id'] for d in dw_tracks['items']]
     return track_ids
 
+
 def save_discover_weekly(user):
     today = date.today()
     last_monday = today - timedelta(days=today.weekday())
@@ -72,6 +75,17 @@ def save_discover_weekly(user):
     sp.user_playlist_add_tracks(username,
                                 new_saved_dw_playlist['id'],
                                 track_ids)
+    playlist = Playlist(playlist_id=new_saved_dw_playlist['id'],
+                        user=user,
+                        name=new_saved_dw_playlist['name'])
+    #TODO: Should separate saving DW on user end and in DB. Redundancy.       
+    for track_id in track_ids:  
+        song = Song(track_id=track_id)
+        playlist.songs.append(song)
+        
+    db.session.add(playlist)
+    db.session.commit()
+            
     dw_url = new_saved_dw_playlist['external_urls']['spotify']
     return new_saved_dw_playlist
 

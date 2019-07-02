@@ -17,7 +17,7 @@ def index():
 @app.route('/success')
 def callback():
     code = request.args.get('code')
-    #TODO: See if way to move most of below into tools.py
+    #TODO: See if way to move most of below into tools.py or rather models.py
     token_info = tools.oauth.get_access_token(code)                         
     sp = tools.spotipy.Spotify(auth=token_info['access_token'])
     username = sp.current_user()['id']

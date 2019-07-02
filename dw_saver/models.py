@@ -1,9 +1,10 @@
 from datetime import datetime
 from dw_saver import db
 
-
+#TODO: Move bulk of functions from tools.py and maybe routes.py to here
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     weekly_scheduled = db.Column(db.Boolean, default=False)
@@ -19,30 +20,23 @@ class User(db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
+#Consider adding tags to playlists
 class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    playlist_id = db.Column(db.String(64), index=True, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    name = db.Column(db.String(120), index=True)
     songs = db.relationship('Song', backref='playlist', lazy='dynamic')
 
     def __repr__(self):
         return '<Playlist {}>'.format(self.body)
 
-#TODO: Think about how you want to do the relationship between songs and playlists.
-#Because songs can show up in multiple playlists, it probably makes sense to not duplicateself.
-#Perhaps this should be a many-to-many relationship b/w songs and playlists...
-
 class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title =
-    artist =
-    length =
+    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    track_id = db.Column(db.String(64), index=True)
     playlist_id = db.Column(db.Integer, db.ForeignKey('playlist.id'))
 
     def __repr__(self):
         return '<Song {}>'.format(self.body)
-
-song_playlist = db.Table('songs_playlists',
-    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
-)
