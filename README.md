@@ -5,8 +5,15 @@ Runs on Python 3.6.0 in production.
 To set up a new local environment:
 ```
 $ git clone https://gitlab.com/jallen92/flask-spotify.git
+$ cd flask-spotify
 $ python3 -m venv venv
+
+#If macOS or Linux
+$ source venv/bin/activate
+
+#If Windows
 $ source venv/Scripts/activate
+
 $ pip install -r requirements.txt
 ```
 
