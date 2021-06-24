@@ -18,6 +18,17 @@ $ source venv/bin/activate
 $ pip install -r requirements.txt
 ```
 
+Can do a quick test run of running `jobs.py` from the terminal with the below commands. It will either grab (and print to terminal) the current week's *saved* Discover Weekly or create it if it doesn't exist (for jabsybobabsy).
+
+```
+$ export MY_WEEKLY_NOW=True
+$ python jobs.py
+```
+
+Can set up scheduled task to run `jobs.py` from your local macOS machine using the `full_run_job_now` file (or test with `run_my_weekly_now`) and following the instructions [here](https://medium.com/analytics-vidhya/effortlessly-automate-your-python-scripts-cd295697dff6) (or as a backup, [here](https://martechwithme.com/schedule-python-scripts-windows-mac/)). Both require a top user level folder named `scheduled_tasks`
+
+Note: make sure you're using python 3.6 for any/all commands. Should be automatic with the above `pyenv` and `venv` commands. But can verify with `python -V`. And can force usage of the local python version with `pyenv exec python3`.
+
 If using Windows (haven't checked if any uses with using python versions greater than 3.6.0):
 
 ```

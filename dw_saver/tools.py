@@ -37,23 +37,23 @@ def refresh_and_save_token(user):
     user.token_expires_in = fresh_token_info['expires_in']
     db.session.commit()
     db.session.refresh(user)
-    
+
 def find_playlist_by_name(user, name):
     sp = spotipy.Spotify(auth=user.access_token)
     playlists = sp.current_user_playlists()
     playlist_index = dict_index_by_key(playlists['items'], 'name', name)
-    
+
     while not playlist_index and playlists['next']:
         playlists = sp.next(playlists)
         playlist_index = dict_index_by_key(playlists['items'], 'name', name)
-        
+
     if playlist_index:
         return playlists['items'][playlist_index]
     else:
         return None
-    
+
 def dw_track_ids_from_playlist(user):
-    sp = spotipy.Spotify(auth=user.access_token) 
+    sp = spotipy.Spotify(auth=user.access_token)
     dw_playlist = find_playlist_by_name(user, 'Discover Weekly')
     dw_tracks = sp.user_playlist_tracks('spotify',
                                         dw_playlist['id'])
@@ -62,12 +62,12 @@ def dw_track_ids_from_playlist(user):
 
 def save_discover_weekly(user):
     today = date.today()
-    last_monday = today - timedelta(days=today.weekday()) 
-    sp = spotipy.Spotify(auth=user.access_token) 
+    last_monday = today - timedelta(days=today.weekday())
+    sp = spotipy.Spotify(auth=user.access_token)
     username = sp.current_user()['id']
-    track_ids = dw_track_ids_from_playlist(user)   
-    new_saved_dw_playlist = sp.user_playlist_create(username, 
-                                                    'DW-'+str(last_monday), 
+    track_ids = dw_track_ids_from_playlist(user)
+    new_saved_dw_playlist = sp.user_playlist_create(username,
+                                                    'DW-'+str(last_monday),
                                                     public=False)
     sp.user_playlist_add_tracks(username,
                                 new_saved_dw_playlist['id'],
@@ -75,23 +75,30 @@ def save_discover_weekly(user):
     dw_url = new_saved_dw_playlist['external_urls']['spotify']
     return new_saved_dw_playlist
 
+def get_or_save_discover_weekly(user):
+    today = date.today()
+    last_monday = today - timedelta(days=today.weekday())
+    saved_dw_playlist = (find_playlist_by_name(user, 'DW-'+str(last_monday)) or
+                           save_discover_weekly(user))
+    return saved_dw_playlist
+
 def save_all_users_dw():
-    #TODO: Don't grab all users; query just for scheduled users.    
-    users = User.query.all()  
+    #TODO: Don't grab all users; query just for scheduled users.
+    users = User.query.all()
     for user in users:
-        if (user.weekly_scheduled or user.monthly_scheduled):           
+        if (user.weekly_scheduled or user.monthly_scheduled):
             if is_token_expired(user) == True:
-                refresh_and_save_token(user)   
-            if user.weekly_scheduled:               
+                refresh_and_save_token(user)
+            if user.weekly_scheduled:
                 save_discover_weekly(user)
             if user.monthly_scheduled:
                 add_dw_tracks_to_monthly_dw(user)
-        
+
 def create_monthly_dw(user, month, year):
-    sp = spotipy.Spotify(auth=user.access_token)          
-    monthly_dw_playlist = sp.user_playlist_create(user.username, 
-                                                  f'DW-{month}-{year}', 
-                                                  public=False)    
+    sp = spotipy.Spotify(auth=user.access_token)
+    monthly_dw_playlist = sp.user_playlist_create(user.username,
+                                                  f'DW-{month}-{year}',
+                                                  public=False)
     return monthly_dw_playlist
 
 def get_or_create_monthly_dw(user):
@@ -99,7 +106,7 @@ def get_or_create_monthly_dw(user):
     month = today.strftime("%b")
     year = today.strftime("%Y")
     monthly_dw_playlist = (find_playlist_by_name(user, f'DW-{month}-{year}') or
-                           create_monthly_dw(user, month, year))        
+                           create_monthly_dw(user, month, year))
     return monthly_dw_playlist
 
 def add_dw_tracks_to_monthly_dw(user):

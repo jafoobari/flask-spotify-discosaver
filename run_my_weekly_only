@@ -1,0 +1,5 @@
+#!/bin/sh
+cd ~/scheuled_tasks/flask-spotify
+export MY_WEEKLY_NOW=True
+source venv/bin/activate
+venv/bin/python3 jobs.py
