@@ -2,22 +2,31 @@
 
 Runs on Python 3.6.0 in production.
 
-To set up a new local environment:
+### To set up a new local environment:
+
+If using macOS, probably is a good idea to ensure you're using python 3.6.0 since that's what the project expects. We can use `pyenv` to help with that.
+
 ```
+$ brew install pyenv
 $ git clone https://gitlab.com/jallen92/flask-spotify.git
 $ cd flask-spotify
-$ python3 -m venv venv
-
-#If macOS or Linux
+$ pyenv install 3.6.0
+$ pyenv local 3.6.0
+$ pyenv exec python3 -V
+$ pyenv exec python3 -m venv venv
 $ source venv/bin/activate
-
-#If Windows
-$ source venv/Scripts/activate
-
 $ pip install -r requirements.txt
 ```
 
-To activate virtual environment on production machine:
+If using Windows (haven't checked if any uses with using python versions greater than 3.6.0):
+
+```
+$ python3 -m venv venv
+$ source venv/Scripts/activate
+$ pip install -r requirements.txt
+```
+
+To activate virtual environment on production machine (pythonanywhere):
 ```
 $ workon flask-SP-virtualenv
 ```
@@ -41,7 +50,7 @@ $ flask db upgrade
 
 To get a specific remote branch for local development:
 ```
-$ git pull origin <rbranch>:<lbranch> 
+$ git pull origin <rbranch>:<lbranch>
 $ git checkout <lbranch>
 ```
 
@@ -68,4 +77,3 @@ $ git checkout master
 $ git branch -d <branch>
 $ git push origin :<branch> #delete the branch from the remote repo
 ```
-
