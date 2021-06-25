@@ -47,6 +47,13 @@ To ensure you have the latest changes:
 $ git pull origin master
 ```
 
+To run Flask console/shell use below commands. You can access the main functions with the `Tools` variable (see `spotify_dw.py`).
+
+```
+$ export FLASK_APP=spotify_dw.py
+$ flask shell
+```
+
 To run web app locally:
 ```
 $ export FLASK_APP=spotify_dw.py
