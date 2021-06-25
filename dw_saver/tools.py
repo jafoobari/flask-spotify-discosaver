@@ -44,8 +44,8 @@ def find_playlist_by_name(user, name):
     playlist_index = dict_index_by_key(playlists['items'], 'name', name)
 
     while playlist_index is None and playlists['next']:
-        offset = playlists["offset"]
-        print(f'No luck with {offset} - {offset+50}')
+        # offset = playlists["offset"]
+        # print(f'No luck with {offset} - {offset+50}')
         playlists = sp.next(playlists)
         playlist_index = dict_index_by_key(playlists['items'], 'name', name)
 
