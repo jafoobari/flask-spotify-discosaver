@@ -29,7 +29,7 @@ Can set up scheduled task to run `jobs.py` from your local macOS machine using t
 
 Note: make sure you're using python 3.6 for any/all commands. Should be automatic with the above `pyenv` and `venv` commands. But can verify with `python -V`. And can force usage of the local python version with `pyenv exec python3`.
 
-If using Windows (haven't checked if any uses with using python versions greater than 3.6.0):
+If using Windows (haven't checked if any issues with using python versions greater than 3.6.0):
 
 ```
 $ python3 -m venv venv
