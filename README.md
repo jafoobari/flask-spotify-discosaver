@@ -1,6 +1,6 @@
 # Discosavor
 
-**Problem:** My wife and I love finding new music with Spotify's rotating [Discover Weekly](https://www.spotify.com/us/discoverweekly/) playlist. Sadly, each week's Discover Weekly is ephemeral. There isn't any way to retrieve songs 
+**Problem:** My wife and I love finding new music with Spotify's rotating [Discover Weekly](https://www.spotify.com/us/discoverweekly/) playlist. Sadly, each week the songs on your Discover Weekly disappear without a trace. There isn't any way to retrieve songs from past Discover Weekly playlists.
 
 **Solution:** I created `Discosavor` as a way to preserve all of our Discover Weekly playlists so we can ~~enjoy~~ savor them whenever we want.
 
@@ -13,7 +13,7 @@
 
 Demo of the web app UI here: https://hyzypg.pythonanywhere.com/
 
-(**Note**: The folders in the above screenshots are user created – the Spotify API does not have an endpoint for interacting with folders.)
+(**Note**: The playlist folders in the above screenshots are user created – the Spotify API does not have endpoints for interacting with playlist folders.)
 
 ## Installation
 **Note**: Runs on Python 3.6.0 in production.
