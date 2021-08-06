@@ -81,8 +81,8 @@ $ flask db upgrade
 
 To get a specific remote branch for local development:
 ```
-$ git pull origin <rbranch>:<lbranch>
-$ git checkout <lbranch>
+$ git pull origin <remote_branch>:<local_branch>
+$ git checkout <local_branch>
 ```
 
 ### Merging
