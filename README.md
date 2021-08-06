@@ -1,8 +1,19 @@
 # Discosavor
 
-**Problem:** My partner and I love finding new music with Spotify's rotating [Discover Weekly](https://www.spotify.com/us/discoverweekly/) playlist. Sadly, each week the songs on your Discover Weekly disappear without a trace. There isn't any way to retrieve songs from past Discover Weekly playlists.
+`Discosavor` is a [`Flask`](https://github.com/pallets/flask) web app that uses the [Spotify API](https://developer.spotify.com/documentation/web-api/) (via the handy [`Spotipy`](https://github.com/plamere/spotipy) library) to automatically save your rotating Spotify [Discover Weekly](https://www.spotify.com/us/discoverweekly/) playlist each week.
 
-**Solution:** I created `Discosavor` as a way to preserve all of our Discover Weekly playlists so we can ~~enjoy~~ savor them whenever we want.
+## Contents
+
+* [Why?](#why)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Development](#development)
+
+## Why?
+
+I love using Spotify's ever-changing Discover Weekly to find new music. Sadly, each week the songs on your Discover Weekly disappear without a trace. There isn't any way to figure out which songs were on a past Discover Weekly playlist.
+
+I created `Discosavor` as a way to preserve all of my Discover Weekly playlists so I can ~~enjoy~~ savor them whenever I want. (And to allow my partner to do the same.)
 
 `Discosavor` automatically does two things:
 1. Saves the current Discover Weekly into its own standalone playlist titled based on Monday's date (e.g. `DW-2021-07-26`)
@@ -20,7 +31,7 @@ Demo of the `Flask` web app UI here: https://hyzypg.pythonanywhere.com/
 
 ```
 $ git clone https://gitlab.com/jallen92/flask-spotify-discosaver.git
-$ cd flask-spotify
+$ cd flask-spotify-discosaver
 ```
 
 #### macOS
@@ -43,6 +54,10 @@ $ source venv/Scripts/activate
 $ pip install -r requirements.txt
 ```
 
+## Usage
+
+In order to run this app locally, you'll need to create a free [Spotify developer account](https://developer.spotify.com/dashboard/) and create your own integration. After you do that enter your integration's credentials in `config.py`.
+
 You can do a quick test run of running `jobs.py` from the terminal with the below commands. It will either grab (and print to terminal) the current week's *saved* Discover Weekly or create it if it doesn't exist (hardcoded to only run for my Spotify user).
 
 ```
@@ -60,6 +75,7 @@ $ export FLASK_APP=spotify_dw.py
 $ export FLASK_CONFIG=dev
 $ flask run
 ```
+The web app requires users to authenticate via Spotify.
 
 ## Development
 
@@ -84,8 +100,6 @@ To get a specific remote branch for local development:
 $ git pull origin <remote_branch>:<local_branch>
 $ git checkout <local_branch>
 ```
-
-### Merging
 
 To merge a branch with master:
 ```
