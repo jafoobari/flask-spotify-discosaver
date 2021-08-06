@@ -11,9 +11,9 @@
 <img src="img/saved_weekly.png" width="50%" height="50%">
 <img src="img/saved_monthly.png" width="50%" height="50%">
 
-Demo of the `Flask` web app UI here: https://hyzypg.pythonanywhere.com/
-
 (**Note**: The playlist folders in the above screenshots are user created – the Spotify API does not have endpoints for interacting with playlist folders.)
+
+Demo of the `Flask` web app UI here: https://hyzypg.pythonanywhere.com/
 
 ## Installation
 **Note**: Runs on Python 3.6.0 in production.
