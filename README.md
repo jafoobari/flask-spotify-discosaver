@@ -1,6 +1,6 @@
 # Discosavor
 
-**Problem:** My wife and I love finding new music with Spotify's rotating [Discover Weekly](https://www.spotify.com/us/discoverweekly/) playlist. Sadly, each week the songs on your Discover Weekly disappear without a trace. There isn't any way to retrieve songs from past Discover Weekly playlists.
+**Problem:** My partner and I love finding new music with Spotify's rotating [Discover Weekly](https://www.spotify.com/us/discoverweekly/) playlist. Sadly, each week the songs on your Discover Weekly disappear without a trace. There isn't any way to retrieve songs from past Discover Weekly playlists.
 
 **Solution:** I created `Discosavor` as a way to preserve all of our Discover Weekly playlists so we can ~~enjoy~~ savor them whenever we want.
 
@@ -19,7 +19,7 @@ Demo of the `Flask` web app UI here: https://hyzypg.pythonanywhere.com/
 **Note**: Runs on Python 3.6.0 in production.
 
 ```
-$ git clone https://gitlab.com/jallen92/flask-spotify.git
+$ git clone https://gitlab.com/jallen92/flask-spotify-discosaver.git
 $ cd flask-spotify
 ```
 
