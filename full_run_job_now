@@ -1,0 +1,6 @@
+#!/bin/sh
+cd ~/scheduled_tasks/flask-spotify
+export RUN_JOB_NOW=True
+source venv/bin/activate
+#Should have python 3.6.0 set as local version
+python3 jobs.py

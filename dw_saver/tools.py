@@ -21,11 +21,11 @@ def str_to_bool(s):
     else:
         return False
 
-
+#Rename, it's really finding a list index by a dict key
 def dict_index_by_key(lst, key, value):
-    for i,d in enumerate(lst):
-        if d[key] == value:
-            return i
+    for idx,dict in enumerate(lst):
+        if dict[key] == value:
+            return idx
     return None
 
 def is_token_expired(user):
@@ -45,20 +45,18 @@ def find_playlist_by_name(user, name):
     playlists = sp.current_user_playlists()
     playlist_index = dict_index_by_key(playlists['items'], 'name', name)
 
-    while not playlist_index and playlists['next']:
+    while playlist_index is None and playlists['next']:
         playlists = sp.next(playlists)
         playlist_index = dict_index_by_key(playlists['items'], 'name', name)
 
-    if playlist_index:
+    if playlist_index is not None:
         return playlists['items'][playlist_index]
     else:
         return None
 
 def dw_track_ids_from_playlist(user):
     sp = spotipy.Spotify(auth=user.access_token)
-    dw_playlist = find_playlist_by_name(user, 'Discover Weekly')
-    dw_tracks = sp.user_playlist_tracks('spotify',
-                                        dw_playlist['id'])
+    dw_tracks = sp.user_playlist_tracks('spotify', user.dw_playlist_id)
     track_ids = [d['track']['id'] for d in dw_tracks['items']]
     return track_ids
 
@@ -88,6 +86,13 @@ def save_discover_weekly(user):
             
     dw_url = new_saved_dw_playlist['external_urls']['spotify']
     return new_saved_dw_playlist
+
+def get_or_save_discover_weekly(user):
+    today = date.today()
+    last_monday = today - timedelta(days=today.weekday())
+    saved_dw_playlist = (find_playlist_by_name(user, 'DW-'+str(last_monday)) or
+                           save_discover_weekly(user))
+    return saved_dw_playlist
 
 def save_all_users_dw():
     #TODO: Don't grab all users; query just for scheduled users.

@@ -7,7 +7,7 @@ from dw_saver.models import User
 @app.before_first_request
 def setup_session():
     session.permanent = True
-            
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -17,6 +17,7 @@ def index():
 @app.route('/success')
 def callback():
     code = request.args.get('code')
+
     #TODO: See if way to move most of below into tools.py or rather models.py
     token_info = tools.oauth.get_access_token(code)                         
     sp = tools.spotipy.Spotify(auth=token_info['access_token'])
@@ -36,32 +37,35 @@ def callback():
                     weekly_scheduled=False,
                     monthly_scheduled=False)
         db.session.add(user)
+        #Not sure if this will work, but we "need" user to exist in db in order to get dw_playlist_id
+        dw_playlist = tools.find_playlist_by_name(user, 'Discover Weekly')
+        user.dw_playlist_id = dw_playlist['id']
         db.session.commit()
     return render_template('success.html', username=username)
-    
 
-#TODO: Get username without passing it through URL. Perhaps via session.    
+
+#TODO: Get username without passing it through URL. Perhaps via session.
 @app.route('/save-playlist/<username>')
-def save_playlist(username):        
+def save_playlist(username):
     user = User.query.filter_by(username=username).first()
     if tools.is_token_expired(user) == True:
-        tools.refresh_and_save_token(user)                                          
+        tools.refresh_and_save_token(user)
     new_saved_dw_playlist = tools.save_discover_weekly(user)
     dw_url = new_saved_dw_playlist['external_urls']['spotify']
     return render_template('playlist-saved.html', username=username,
                            dw_url=dw_url, dw_uri=new_saved_dw_playlist['uri'])
 
 @app.route('/save-to-monthly-playlist/<username>')
-def save_to_monthly_playlist(username):        
+def save_to_monthly_playlist(username):
     user = User.query.filter_by(username=username).first()
     if tools.is_token_expired(user) == True:
-        tools.refresh_and_save_token(user)                                          
+        tools.refresh_and_save_token(user)
     #TODO: Clean this up. Better var names, own template, etc.
     monthly_dw_playlist = tools.add_dw_tracks_to_monthly_dw(user)
     return render_template('playlist-saved.html', username=username,
                            dw_uri=monthly_dw_playlist['uri'])
 
-#TODO: Check for existence of DW playlist on sign-up and save id for it in DB.     
+#TODO: Check for existence of DW playlist on sign-up and save id for it in DB.
 @app.route('/connect-spotify')
 def auth():
     if not session.get('username'):
@@ -73,7 +77,7 @@ def auth():
         monthly_is_checked = user.monthly_scheduled
         weekly_checkbox = 'checked' if weekly_is_checked else ""
         monthly_checkbox = 'checked' if monthly_is_checked else ""
-    
+
         return render_template('settings.html', username=username,
                                weekly_checkbox=weekly_checkbox,
                                monthly_checkbox=monthly_checkbox)
@@ -81,7 +85,7 @@ def auth():
 @app.route('/settings', methods=['GET', 'POST'])
 def save_settings():
     username = session.get('username')
-    user = User.query.filter_by(username=username).first() 
+    user = User.query.filter_by(username=username).first()
     if request.method == 'POST':
         weekly_is_checked = 'weekly' in request.form
         monthly_is_checked = 'monthly' in request.form
@@ -100,9 +104,7 @@ def save_settings():
 
     weekly_checkbox = 'checked' if weekly_is_checked else ""
     monthly_checkbox = 'checked' if monthly_is_checked else ""
-    
+
     return render_template('settings.html', username=username,
                            weekly_checkbox=weekly_checkbox,
                            monthly_checkbox=monthly_checkbox)
-    
-    

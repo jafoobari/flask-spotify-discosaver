@@ -9,9 +9,9 @@ class DefaultConfig(object):
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     #Spotify client details
-    CLIENT_ID = '8412e923acce48a8b99ada05b6ba1181'     
-    CLIENT_SECRET = 'fbcadd353812442aaf9bd8c2bf6f0801'
-    REDIRECT_URI = 'http://hyzypg.pythonanywhere.com/success'
+    CLIENT_ID = ''     
+    CLIENT_SECRET = ''
+    REDIRECT_URI = 'http://localhost:5000/success'
     SCOPE = 'playlist-modify-private playlist-modify-public'
 
 
